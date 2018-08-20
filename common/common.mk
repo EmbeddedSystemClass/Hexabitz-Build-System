@@ -71,12 +71,12 @@ endif # generate_asm_rule
 $(foreach file,$(CC_FILES),$(eval $(call generate_c_rule,$(file))))
 $(foreach file,$(ASM_FILES),$(eval $(call generate_asm_rule,$(file))))
 
-size: $(BUILD_DIR)/bin/$(PROJ_NAME).elf
-	@echo "Size area memories in binary image $(BUILD_DIR)/bin/$(PROJ_NAME).elf"
-	$(SIZE) $(BUILD_DIR)/bin/$(PROJ_NAME).elf
+size: $(BUILD_DIR)/bin/$(BINARY_NAME).elf
+	@echo "Size area memories in binary image $(BUILD_DIR)/bin/$(BINARY_NAME).elf"
+	$(SIZE) $(BUILD_DIR)/bin/$(BINARY_NAME).elf
 
-d_size: $(BUILD_DIR)/bin/$(PROJ_NAME).elf
-	$(NM) --demangle --print-size --size-sort --reverse-sort -S $(BUILD_DIR)/bin/$(PROJ_NAME).elf
+d_size: $(BUILD_DIR)/bin/$(BINARY_NAME).elf
+	$(NM) --demangle --print-size --size-sort --reverse-sort -S $(BUILD_DIR)/bin/$(BINARY_NAME).elf
 
 show_flag:
 	@echo "\r\nCC_DIRS :"
@@ -101,12 +101,12 @@ show_flag:
 	@echo $(BUILD_DIR)
 	@echo "\r\n"
 
-hex: $(BUILD_DIR)/bin/$(PROJ_NAME).elf
-	$(OBJCPY) -O ihex $(BUILD_DIR)/bin/$(PROJ_NAME).elf $(BUILD_DIR)/bin/$(PROJ_NAME).hex
+hex: $(BUILD_DIR)/bin/$(BINARY_NAME).elf
+	$(OBJCPY) -O ihex $(BUILD_DIR)/bin/$(BINARY_NAME).elf $(BUILD_DIR)/bin/$(BINARY_NAME).hex
 
 build: $(OBJECT_FILE)
-	@echo "Linking object files to create new binary image $(BUILD_DIR)/bin/$(PROJ_NAME).elf"
-	$(LD) $(LD_OPT) -o $(BUILD_DIR)/bin/$(PROJ_NAME).elf
+	@echo "Linking object files to create new binary image $(BUILD_DIR)/bin/$(BINARY_NAME).elf"
+	$(LD) $(LD_OPT) -o $(BUILD_DIR)/bin/$(BINARY_NAME).elf
 
 clean:
 	@rm -rf $(BUILD_DIR)
