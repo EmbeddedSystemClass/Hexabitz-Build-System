@@ -21,7 +21,7 @@
 #
 
 # board support
-board 			:= h1dr5
+board 			:= h01r0
 list_board		:= h0br4 h01r0 h0ar9 h07r3 h23r0 h1dr5
 
 ifeq ($(filter $(board),$(list_board)),)
@@ -33,7 +33,7 @@ HEXABITZ_DIR		:= ..
 BOARD_NAME			:= $(board)
 BINARY_NAME			:= $(BOARD_NAME)_gcc
 
-# User
+# user code
 USER_DIR			:= $(HEXABITZ_DIR)/$(BOARD_NAME)/User
 
 # specific source code for a board
@@ -42,13 +42,12 @@ BOARD_DIR			:= $(HEXABITZ_DIR)/$(BOARD_NAME)/$(BOARD_NAME)
 # BOS
 BOS_DIR				:= $(HEXABITZ_DIR)/$(BOARD_NAME)/BOS
 
-# Thirdparty
+# thirdparty
 THIRDPARTY_DIR		:= $(HEXABITZ_DIR)/$(BOARD_NAME)/Thirdparty
 
 # middleware
 MIDDLEWARE_DIR		:= $(THIRDPARTY_DIR)/Middleware
 FREERTOS_DIR 		:= $(MIDDLEWARE_DIR)/FreeRTOS/Source
-FREERTOS_DIR_ 		:= $(BUILD_SYSTEM_DIR)/freertos/FreeRTOSV8.2.1/FreeRTOS/Source
 
 # hal library
 HAL_DIR				:= $(THIRDPARTY_DIR)/STM32F0xx_HAL_Driver
@@ -66,8 +65,9 @@ CC_DIRS				+= $(HAL_DIR)/Src
 CC_DIRS				+= $(USER_DIR)
 CC_DIRS				+= $(FREERTOS_DIR)
 CC_DIRS				+= $(FREERTOS_DIR)/CMSIS_RTOS
-CC_DIRS				+= $(FREERTOS_DIR_)/portable/GCC/ARM_CM0
+CC_DIRS				+= $(FREERTOS_DIR)/portable/GCC/ARM_CM0
 CC_DIRS				+= $(CMSIS_DIR)/Device/ST/STM32F0xx/Source
+CC_DIRS				+= $(CMSIS_DIR)/Device/ST/STM32F0xx/Source/Templates
 
 # select heap file for FreeRTOS
 FREERTOS_HEAP_DIR	:= $(FREERTOS_DIR)/portable/MemMang
@@ -77,29 +77,22 @@ CC_FILES			+= $(FREERTOS_HEAP_DIR)/heap_4.c
 ASM_DIRS			+= $(BUILD_SYSTEM_DIR)/src
 
 # include folders:
-INC_DIRS			+= $(COMPILER_DIR)/arm-none-eabi/include
-INC_DIRS			+= $(BOS_DIR)
-INC_DIRS			+= $(BOARD_DIR)
-INC_DIRS			+= $(HAL_DIR)/Inc
 INC_DIRS			+= $(USER_DIR)
-INC_DIRS			+= $(FREERTOS_DIR)/include
+INC_DIRS			+= $(BOARD_DIR)
+INC_DIRS			+= $(BOS_DIR)
 INC_DIRS			+= $(FREERTOS_DIR)/CMSIS_RTOS
-INC_DIRS			+= $(FREERTOS_DIR_)/portable/GCC/ARM_CM0
+INC_DIRS			+= $(FREERTOS_DIR)/include
+INC_DIRS			+= $(FREERTOS_DIR)/portable/GCC/ARM_CM0
+INC_DIRS			+= $(HAL_DIR)/Inc/Legacy
+INC_DIRS			+= $(HAL_DIR)/Inc
 INC_DIRS			+= $(CMSIS_DIR)/Device/ST/STM32F0xx/Include
 INC_DIRS			+= $(CMSIS_DIR)/Include
 
-# linker file
-LINKER_FILE			:= $(BUILD_SYSTEM_DIR)/board/linker/STM32F091CBTx_FLASH.ld
-
-
-# setting compiler option
-CC_OPT			+= -march=armv6-m -mcpu=cortex-m0 -c -g -mthumb $(INC_DIR) -DUSE_HAL_DRIVER -DSTM32F091xC -D_module=1
-ASM_OPT			+= -march=armv6-m -mcpu=cortex-m0 -c -mthumb --defsym __STARTUP_CLEAR_BSS=1 --defsym __STACK_SIZE=0x200 --defsym __HEAP_SIZE=0x100
-LD_OPT			+= -T $(LINKER_FILE) -Map $(BUILD_DIR)/bin/$(BINARY_NAME).map $(OBJECT_FILE) -L $(COMPILER_DIR)/arm-none-eabi/lib/thumb/v6-m -lc_nano -lnosys -L $(COMPILER_DIR)/lib/gcc/arm-none-eabi/7.3.1/thumb/v6-m -lgcc
+#INC_DIRS			+= $(COMPILER_DIR)/arm-none-eabi/include
 
 # include board setting
 include $(BUILD_SYSTEM_DIR)/board/make/$(BOARD_NAME).mk
 
 # include build system to use common taget rules:
-BUILD_SYSTEM		:= $(BUILD_SYSTEM_DIR)/common_make
+BUILD_SYSTEM		:= $(BUILD_SYSTEM_DIR)/common
 include	$(BUILD_SYSTEM)/common.mk
