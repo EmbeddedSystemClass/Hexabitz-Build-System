@@ -20,24 +20,9 @@
 #
 #
 
+# general setting compiler option
+
 # setting compiler option
-CC_OPT			+= -DH1DR5 -D_module=1
-ASM_OPT			+=
-LD_OPT			+=
-
-# UDP library
-FREERTOS_UPD_DIR	:= $(MIDDLEWARE_DIR)/FreeRTOS-Plus-UDP
-
-# list folder contains C language files
-CC_DIRS				+= $(FREERTOS_UPD_DIR)
-CC_DIRS				+= $(FREERTOS_UPD_DIR)/portable/BufferManagement
-CC_DIRS				+= $(FREERTOS_UPD_DIR)/portable/NetworkInterface/enc28j60
-
-# include folders:
-INC_DIRS			+= $(FREERTOS_UPD_DIR)/include
-INC_DIRS			+= $(FREERTOS_UPD_DIR)/portable/Compiler/GCC
-
-# linker file
-LINKER_FILE			:= $(BUILD_SYSTEM_DIR)/board/linker/STM32F091CBTx_FLASH.ld
-
-include $(BUILD_SYSTEM_DIR)/board/make/hexabitz.mk
+CC_OPT			+= -march=armv6-m -mcpu=cortex-m0 -c -g -Os -mthumb -std=c99 -Wall -ffunction-sections -fdata-sections $(INC_DIR) -DUSE_HAL_DRIVER -DSTM32F091xC
+ASM_OPT			+= -march=armv6-m -mcpu=cortex-m0 -c -mthumb --defsym __STARTUP_CLEAR_BSS=1 --defsym __STACK_SIZE=0x200 --defsym __HEAP_SIZE=0x100
+LD_OPT			+= --gc-sections -T $(LINKER_FILE) -Map $(BUILD_DIR)/bin/$(BINARY_NAME).map $(OBJECT_FILE) -L $(COMPILER_DIR)/arm-none-eabi/lib/thumb/v6-m -lc_nano -lnosys -L $(COMPILER_DIR)/lib/gcc/arm-none-eabi/7.3.1/thumb/v6-m -lgcc
