@@ -74,7 +74,7 @@ FREERTOS_HEAP_DIR	:= $(FREERTOS_DIR)/portable/MemMang
 CC_FILES			+= $(FREERTOS_HEAP_DIR)/heap_4.c
 
 # list folder contains ASM language files
-ASM_DIRS			+= $(BUILD_SYSTEM_DIR)/src
+ASM_DIRS			+= $(BUILD_SYSTEM_DIR)/board/src
 
 # include folders:
 INC_DIRS			+= $(USER_DIR)
