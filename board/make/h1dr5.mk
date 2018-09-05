@@ -40,4 +40,4 @@ INC_DIRS			+= $(FREERTOS_UPD_DIR)/portable/Compiler/GCC
 # linker file
 LINKER_FILE			:= $(BUILD_SYSTEM_DIR)/board/linker/STM32F091CBTx_FLASH.ld
 
-include $(BUILD_SYSTEM_DIR)/board/make/hexabitz.mk
+include $(BUILD_SYSTEM_DIR)/board/make/stm32f091xc.mk

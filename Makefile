@@ -22,7 +22,7 @@
 
 # board support
 board 			:= h01r0
-list_board		:= h0br4 h01r0 h0ar9 h07r3 h23r0 h1dr5
+list_board		:= h0br4 h01r0 h0ar9 h07r3 h23r0 h1dr5 h1dr6
 
 ifeq ($(filter $(board),$(list_board)),)
 $(error Undefined board selection '$(board)', select one from list: $(list_board))
